@@ -1,0 +1,371 @@
+#:import Firebase firebase.Firebase
+#:import ZBarCam kivy_garden.zbarcam.ZBarCam
+
+ScreenManager:
+    id: screen_manager
+    Firebase:
+        id: firebase
+        name: "firebase"
+        debug: True
+        remember_user: True
+        require_email_verification: True
+        web_api_key: "AIzaSyCMQG6gKrBNbwRRewW8yu6_K3FhPEXlzbo" # This should be YOUR web_api_key
+        # background: "assets/img/aluminium.jpg"
+        on_login_success:
+            if self.login_state == 'in': print("User has logged in. Unique identifier is ", self.emailID)
+            if self.login_state == 'out': print("User signed out")
+
+            if self.login_state == 'in': app.local_id = self.localId
+            if self.login_state == 'in': app.email_id = self.emailID
+            if self.login_state == 'in': app.user_idToken = self.idToken
+            if self.login_state == 'in': app.display_user_tokens()
+            if self.login_state == 'in': screen_manager.current = 'home'
+     
+    Home_Screen:
+        id: home
+        name: "home"
+        BoxLayout:
+            orientation: 'vertical'
+            MDToolbar:
+                title: 'Home'
+                left_action_items: [["leaf", lambda x: None]]
+                right_action_items: [['bell-outline', lambda x: app.view_notifications()],['dots-vertical', lambda x: app.show_custom_bottom_sheet()]]
+                elevation: 1
+
+            Screen:
+                ScrollView:
+                    bar_width:0
+                    MDBoxLayout:
+                        orientation:'vertical'
+                        adaptive_height:True
+                        spacing:'12dp'
+                        padding:'2dp'
+                        MDLabel:
+                        MDLabel:
+                            text:'DASHBOARD'
+                            font_style:"Subtitle2"
+                        ScrollView:
+                            size_hint_y:None
+                            height:'200dp'
+                            bar_width:0
+                            MDBoxLayout:
+                                adaptive_width:True
+                                spacing:'3dp'
+                                CustomImageTile:
+                                    source:"assets/img/Fertiliser-subsidy-malawi.jpg"
+                                CustomImageTile:
+                                    source:"assets/img/eligible.jpeg"
+                                CustomImageTile:
+                                    source:"assets/img/IMG_9988-farmers-Malawi-1024x682.jpg"
+                                CustomImageTile:
+                                    source:"assets/img/images.jpeg"
+                        MDGridLayout:
+                            cols:1
+                            size_hint_y:None
+                            MDCard:
+                                orientation: 'vertical'
+                                size_hint_y: None
+                                height: self.minimum_height
+                                TwoLineIconListItem:
+                                    id: the_label
+                                    secondary_text: "View your account"
+                                    divider:None
+                                    IconLeftWidget:
+                                        icon: "assets/img/user_color.png"
+                            MDCard:
+                                orientation: 'vertical'
+                                size_hint_y: None
+                                height: self.minimum_height
+                                on_press: screen_manager.current = "view_registered_farmers"
+                                TwoLineIconListItem:
+                                    text: "Registered Farmers"
+                                    secondary_text: "7896 farmers registered"
+                                    IconLeftSampleWidget:
+                                        icon: 'assets/img/view.png'
+                        MDLabel:
+                        MDLabel:
+                        MDLabel:
+                        MDBoxLayout:
+                            size_hint_y:None
+                            height:'75dp'
+                            spacing:'5dp'
+                            MDCard:
+                                ripple_behavior:True
+                                orientation:'vertical'
+                                padding:'5dp'
+                                adaptive_height:True
+                                on_press: screen_manager.current = "scanqrcode" 
+                                MDIconButton:   
+                                    pos_hint:{'center_x':.5}
+                                    icon:'qrcode-scan'
+                                    color:1,1,1,1
+                                    on_press: screen_manager.current = "scanqrcode" 
+                                MDLabel:
+                                    text:'Scan ID'
+                                    adaptive_height:True
+                                    font_style:'Caption'
+                                    halign:'center'
+                                    bold: True
+                            MDCard: 
+                                ripple_behavior:True
+                                orientation:'vertical'
+                                padding:'5dp'
+                                adaptive_height:True  
+                                on_press: screen_manager.current = "sendfeedback" 
+                                MDIconButton:
+                                    pos_hint:{'center_x':.5}
+                                    icon:'email-send-outline'
+                                    color:1,1,1,1
+                                    on_press: screen_manager.current = "sendfeedback" 
+                                MDLabel:
+                                    text:'Feedback'
+                                    adaptive_height:True
+                                    font_style:'Caption'
+                                    halign:'center'
+                                    bold: True
+                            MDCard: 
+                                id: about_button
+                                ripple_behavior:True
+                                orientation:'vertical'
+                                padding:'5dp'
+                                adaptive_height:True  
+                                on_press: app.show_about_dialog()
+                                MDIconButton:
+                                    pos_hint:{'center_x':.5}
+                                    icon:'help'
+                                    color:1,1,1,1
+                                    on_press: app.show_about_dialog()
+                                MDLabel:
+                                    text:'Help'
+                                    adaptive_height:True
+                                    font_style:'Caption'
+                                    halign:'center'
+                                    bold: True
+                            MDCard: 
+                                ripple_behavior:True
+                                orientation:'vertical'
+                                padding:'5dp'
+                                adaptive_height:True
+                                on_press: app.go_to_settings()
+                                MDIconButton:
+                                    pos_hint:{'center_x':.5}
+                                    icon:'settings-outline'
+                                    color:1,1,1,1
+                                    on_press: app.go_to_settings()
+                                MDLabel:
+                                    text:'Settings'
+                                    adaptive_height:True
+                                    font_style:'Caption'
+                                    halign:'center'
+                                    bold: True
+                        MDBoxLayout:
+                            size_hint_y:None
+                            height:'150dp'
+                            spacing:'5dp'
+                            MDCard: 
+                                ripple_behavior:True
+                                orientation:'vertical'
+                                padding:'5dp'
+                                adaptive_height:True
+                                on_release: screen_manager.current = "view_registered_farmers"
+                                MDIconButton:
+                                    pos_hint:{'center_x':.5}
+                                    icon:'assets/img/logview.png'
+                                    color:1,1,1,1
+                                    on_release: screen_manager.current = "view_registered_farmers"
+                                MDLabel:
+                                    text:'Registered Farmers'
+                                    adaptive_height:True
+                                    halign:'center'
+                                    bold: True
+                                MDLabel:
+                                    text:'View Registered Farmers'
+                                    adaptive_height:True
+                                    font_style:'Caption'
+                                    halign:'center'
+                            MDCard:
+                                ripple_behavior:True
+                                orientation:'vertical'
+                                padding:'5dp'
+                                adaptive_height:True
+                                MDLabel:
+                                    text: "Statistics"
+                                    bold: True
+                                Widget:
+                                MDLabel:
+                                    text: "Registered Farmers    60%"
+                                MDProgressBar:
+                                    value: 60
+                                    color: 0,.6,.8,1
+                                Widget:
+                                MDLabel:
+                                    text: "Fertilizer Available    90%"
+                                MDProgressBar:
+                                    value: 90
+                                    color: 0,.6,.8,1        
+                                Widget:
+                                        
+        MDFloatingActionButton:
+            icon: "qrcode-scan"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {"center_x": .85, "center_y": .1} 
+            on_press: screen_manager.current = "scanqrcode"                    
+    
+    Screen:
+        name: "view_registered_farmers"
+        id: view
+        ViewRegisteredFarmers:
+
+    Screen:
+        name: "alert_screen"
+        id: alert
+        Notification_Screen:
+
+    Screen:
+        name: "settings_screen"
+        id: settings_screen
+        SettingsScreen:
+
+    Screen:
+        name: "scanqrcode"
+        BoxLayout:
+            orientation:'vertical'
+            MDToolbar:
+                title: "Scan QRCode"
+                left_action_items: [['arrow-left', lambda x: app.go_back_home()]] 
+                elevation: 5 
+            MDList:
+                OneLineIconListItem:
+                    text: 'Scan National ID QR Code'
+                    IconLeftWidget:
+                        icon: 'qrcode' 
+            ZBarCam:
+            # MDTextField:
+                id: qrcodecam
+                pos_hint: {"center_y": .85}
+                data: ""
+                text: ""
+                Label:
+                    size_hint: None, None
+                    # size: self.texture_size[0], 50
+                    # text: ' '.join([str(symbol) for symbol in qrcodecam.symbols])
+            BoxLayout:
+                orientation: "vertical"
+                MDTextField:
+                    id: qrcode_details
+                    color: 1, 1, 1, 1 
+                    read_only: True
+                    pos_hint: {"center_x": 0.5, "center_y": .85}
+                    size_hint_x: .82
+                    hint_text: "Scanned National ID Details"
+                    # text: ' '.join([str(symbol) for symbol in qrcodecam.symbols])
+                    # data: ' '
+                Button:
+                    text: "REGISTER"
+                    pos_hint: {"center_x": 0.5, "center_y":0.75}
+                    size_hint: .82,0.60
+                    color: 1, 1, 1, 1 
+                    bold: True
+                    on_press:
+                        app.register_farmer( the_label.text, qrcode_details.text)
+                MDLabel:
+                MDLabel:
+
+    Screen:
+        name: "sendfeedback"
+        id: sendfeedback
+        BoxLayout:
+            orientation:'vertical'
+            MDToolbar:
+                title: "Send Message"
+                left_action_items: [['arrow-left', lambda x: app.go_back_home()]] 
+                elevation: 5 
+            FloatLayout:
+                
+                MDLabel:
+                    text: "Send us your feedback message."
+                    halign: "center"
+                    pos_hint: {"center_x": .5, "center_y": .92}
+                    font_style: "Subtitle2"
+                    font_name: "Roboto-BoldItalic.ttf"
+                    size_hint_y: .20
+                    size_hint_x: .86
+                    font_size: 24
+                    bold: True
+
+                TextInput:
+                    id: feedback_content
+                    hint_text: "Type Your Message Here..."
+                    size_hint: .86, .20
+                    pos_hint: {"center_x": .5, "center_y": .75}
+
+                Button:
+                    text: "SEND MESSAGE"
+                    bold: True
+                    size_hint: .86, .07
+                    pos_hint: {"center_x": .5, "center_y": .57}
+                    color: 1, 1, 1, 1 
+                    on_release: app.send_feedback(the_label.text, feedback_content.text)
+
+<CustomImageTile@SmartTileWithLabel>:
+    size_hint_y:None
+    size_hint_x:None
+    height:'200dp'
+    width:'260dp'
+<GridCard@MDCard>:
+    ripple_behavior:True
+    orientation:'vertical'
+    image:''
+    folder_size:''
+    text:''
+    items_count:""
+    padding:'2dp'
+    spacing:'2dp'
+    size_hint_y:None
+    height:'100dp'
+    Image:
+        source:root.image
+    MDBoxLayout:
+        orientation:'vertical'
+        adaptive_height:True
+        MDLabel:
+            text:root.folder_size
+            adaptive_height:True
+            halign:'center'
+            font_style:'Caption'
+        MDLabel:
+            text:root.text
+            adaptive_height:True
+            halign:'center'
+        MDLabel:
+            halign:"center"
+            text:root.items_count 
+
+<ItemForCustomBottomSheet@OneLineIconListItem>
+    on_press: app.custom_sheet.dismiss()
+    icon: ""
+    IconLeftWidget:
+        icon: root.icon
+
+<ContentCustomSheet@BoxLayout>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: "150dp"
+    BoxLayout:
+        orientation: "vertical"
+        ScrollView:
+            MDGridLayout:
+                cols: 1
+                adaptive_height: True
+                ItemForCustomBottomSheet:
+                    text: "Notifications"
+                    icon: "bell-outline" 
+                    on_press: app.view_notifications()
+                ItemForCustomBottomSheet:
+                    text: "Settings"
+                    icon: "settings-outline" 
+                    on_press: app.go_to_settings()
+                ItemForCustomBottomSheet:
+                    icon: "logout"
+                    text: "Logout"
+                    on_press: app.sign_out()

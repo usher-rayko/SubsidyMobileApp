@@ -1,0 +1,42 @@
+<WelcomeScreen>:
+    name: "welcome_screen"
+    md_bg_color:0.3,0.3,0.3,0.1
+    Image:
+        source: "assets/img/logo.png"
+        pos_hint: {"center_x": .5, "center_y": .60}
+        size_hint_y: .50
+        size_hint_x: .86
+
+    MDRaisedButton:
+        text: "Get Started"
+        bold: True
+        size_hint: .86 ,.062
+        pos_hint: {"center_x": .5, "top": .32}
+        md_bg_color: app.theme_cls.primary_color
+        canvas.before:
+            Color:
+                rgb: rgba(50, 44, 106, 255)
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [15]
+        on_release:
+            root.parent.current = "sign_in_screen"
+
+    MDRaisedButton:
+        text: "Help"
+        bold: True
+        size_hint: .86 ,.062
+        pos_hint: {"center_x": .5, "top": .22}
+        canvas.before:
+            Color:
+                rgb: rgba(50, 44, 106, 255)
+            RoundedRectangle:
+                size: self.size
+                pos: self.pos
+                radius: [15]
+        on_press: app.show_about_dialog()
+
+
+
+

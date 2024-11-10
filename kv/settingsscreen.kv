@@ -1,0 +1,90 @@
+<SettingsScreen>:
+    name: "settings_screen"
+    BoxLayout:
+        orientation: "vertical"
+        MDToolbar:
+            title:'Settings'
+            left_action_items: [['arrow-left', lambda x: app.go_back_home()]]
+            right_action_items: [["logout", lambda x: app.sign_out()]]
+        Screen:
+            ScrollView:
+                bar_width:0
+                MDBoxLayout:
+                    padding:'10dp'
+                    spacing:'10dp'
+                    adaptive_height:True
+                    orientation: "vertical"
+                    MDLabel:
+                    MDLabel:
+                        text:"SETTINGS"
+                        adaptive_height:True
+                        bold: True
+                    MDCard:
+                        size_hint_y:None
+                        height:"80dp"
+                        orientation:"vertical"
+                        padding:"10dp"
+                        TwoLineIconListItem:
+                            text: "Notifications"
+                            secondary_text: "Receive push notifications"
+                            divider:None
+                            IconLeftWidget:
+                                icon: "assets/img/bell.png"
+                                
+                    MDCard:
+                        size_hint_y:None
+                        height:"80dp"
+                        orientation:"vertical"
+                        padding:"10dp"
+                        TwoLineAvatarIconListItem:
+                            text: "Dark Theme"
+                            secondary_text: "Dark or Light"
+                            IconLeftWidget:
+                                icon: "assets/img/dark-mode.png"
+                            IconRightWidget:
+                                icon: "checkbox-marked" if app.theme_cls.theme_style == "Dark" else "checkbox-blank-outline"
+                                on_release:app.theme_cls.theme_style = "Light" if app.theme_cls.theme_style == "Dark" else 'Dark'
+                                theme_text_color:'Custom'
+                                text_color:app.theme_cls.primary_color
+                    MDLabel:
+                    MDLabel:
+                        text:"ABOUT"
+                        adaptive_height:True
+                        bold: True
+                    MDCard:
+                        size_hint_y:None
+                        height:"80dp"
+                        orientation:"vertical"
+                        padding:"10dp"
+                        on_press: app.show_about_dialog()
+                        TwoLineIconListItem:
+                            text: "About SubsidyApp"
+                            secondary_text: "Optichem . Status . Legal information"
+                            divider:None
+                            on_press: app.show_about_dialog()
+                            IconLeftWidget:
+                                icon: "assets/img/info.png"
+                    MDCard:
+                        size_hint_y:None
+                        height:"80dp"
+                        orientation:"vertical"
+                        padding:"10dp"
+                        TwoLineIconListItem:
+                            text: "By Raymond Kondowe"
+                            secondary_text: "Questions? Need help?"
+                            divider:None
+                            IconLeftWidget:
+                                icon: "assets/img/About_Me.png"
+                    MDCard:
+                        size_hint_y:None
+                        height:"80dp"
+                        orientation:"vertical"
+                        padding:"10dp"
+                        TwoLineIconListItem:
+                            text: "Updates"
+                            secondary_text: "Check for updates"
+                            divider:None
+                            IconLeftWidget:
+                                icon: "assets/img/updates.png"
+
+

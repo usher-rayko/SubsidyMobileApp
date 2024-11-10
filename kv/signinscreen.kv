@@ -1,0 +1,75 @@
+<SignInScreen>:
+    name: "sign_in_screen"
+    md_bg_color: app.theme_cls.accent_color
+    FloatLayout:
+        md_bg_color: app.theme_cls.accent_color
+        MDLabel:
+            text: "SubsidyApp"
+            pos_hint: {"center_x": .5, "center_y": .85}
+            size_hint_y: .11
+            size_hint_x: .86
+            halign: "center"
+            font_name: "Roboto-BoldItalic.ttf"
+            font_size: 46
+            bold: True
+
+        MDLabel:
+            text: "Please provide valid details to login."
+            halign: "center"
+            pos_hint: {"center_y":.77}
+            font_style: "Subtitle2"
+
+        MDTextField:
+            id: email
+            size_hint_x: .86
+            pos_hint: {"center_x": .5, "top": .7}
+            hint_text: "Enter your Email"
+
+        MDTextField:
+            id: password
+            size_hint_x: .86
+            pos_hint: {"center_x": .5, "top": .61}
+            hint_text: "Enter your Password"
+            password: True
+
+        MDRaisedButton:
+            text: "Sign In"
+            bold: True
+            size_hint: .86 ,.062
+            pos_hint: {"center_x": .5, "top": .52}
+            md_bg_color: app.theme_cls.primary_color
+            on_release:
+                # Need to refer to the FirebaseLoginScreen
+                root.parent.parent.sign_in(email.text, password.text)
+                sign_in_button.opacity = 0
+                sign_in_button.disabled = True
+                root.parent.parent.display_loading_screen()
+
+        MDRaisedButton:
+            text: "Forgot Password?"
+            bold: True
+            size_hint: .86 ,.062
+            pos_hint: {"center_x": .5, "top": .42}
+            md_bg_color: app.theme_cls.primary_color
+            on_release:
+                root.parent.current = "reset_password_screen"
+
+        MDRaisedButton:
+            text: "Sign In"
+            size_hint: .38 ,.05
+            pos_hint: {"center_x": .75, "top": .29}
+            md_bg_color: .9,.9,.9,1
+            on_release:
+                root.parent.parent.login_offline()
+
+        MDRaisedButton:
+            id: sign_in_button
+            text: "Sign up"
+            size_hint: .4 ,.05
+            pos_hint: {"center_x": .75, "center_y": .25}
+            opacity: 0
+            disabled: True
+            on_release:
+                root.parent.current = "sign_up_screen"
+                root.parent.parent.ids.sign_up_screen.ids.email.text = email.text
+                root.parent.parent.ids.sign_up_screen.ids.password.text = password.text

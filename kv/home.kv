@@ -1,0 +1,206 @@
+<Notifications@BoxLayout>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: "1500dp"
+    MDToolbar:
+        title: "Notifications"
+        left_action_items: [['bell-outline', lambda x: print(x)]]
+        right_action_items: [['refresh', lambda x: print(x)]]
+    BoxLayout:
+        orientation: "vertical"
+        ScrollView:
+            MDGridLayout:
+                cols: 1
+                adaptive_height: True
+<Home_Screen>:
+    name: "home"
+    send_feedback_button: send_feedback_button
+    md_bg_color: .9,.9,.9,1
+    MDBoxLayout:
+        orientation:'vertical'
+        # md_bg_color: app.theme_cls.primary_color
+        MDToolbar:
+            bg_color:app.theme_cls.accent_color
+            title: "SubsidyApp"
+            left_action_items: [['leaf', lambda x: print(x)]]
+            right_action_items: [['bell-outline', lambda x: app.show_notifications()],['dots-vertical', lambda x: app.show_custom_bottom_sheet()]]
+        Screen:
+            ScrollView:
+                bar_width:0
+                MDBoxLayout:
+                    md_bg_color: .9,.9,.9,1
+                    orientation:'vertical'
+                    adaptive_height:True
+                    spacing:'12dp'
+                    padding:'2dp'
+                    MDLabel:
+                    MDLabel:
+                        id: the_label
+                        text:'DASHBOARD'
+                        font_style:"Subtitle2"
+                    ScrollView:
+                        size_hint_y:None
+                        height:'200dp'
+                        bar_width:0
+                        MDBoxLayout:
+                            adaptive_width:True
+                            spacing:'3dp'
+                            # height: root.height*.4
+                            CustomImageTile:
+                                source:"assets/img/Fertiliser-subsidy-malawi.jpg"
+                            CustomImageTile:
+                                source:"assets/img/eligible.jpeg"
+                            CustomImageTile:
+                                source:"assets/img/IMG_9988-farmers-Malawi-1024x682.jpg"
+                            CustomImageTile:
+                                source:"assets/img/images.jpeg"
+                    
+                    MDGridLayout:
+                        cols:1
+                        size_hint_y:None
+                        MDCard: 
+                            md_bg_color: .9,.9,.9,1
+                            orientation: 'vertical'
+                            size_hint_y: None
+                            height: self.minimum_height
+                            TwoLineIconListItem:
+                                # text: "Welcome User"
+                                id: the_label
+                                secondary_text: "View your account"
+                                IconLeftSampleWidget:
+                                    icon: 'account'
+                                Widget:
+                            TwoLineIconListItem:
+                                text: "View Farmers"
+                                secondary_text: "7896 farmers registered"
+                                on_release:
+                                    app.view_registered_list()
+                                IconLeftSampleWidget:
+                                    icon: 'view-list'
+                            Widget:
+
+                    MDLabel:
+                    MDLabel:
+                    MDLabel:
+                          
+                    MDBoxLayout:
+                        size_hint_y:None
+                        height:'70dp'
+                        spacing:'2dp'
+                        MDCard:
+                            md_bg_color: .9,.9,.9,1
+                            ripple_behavior:True
+                            orientation:'vertical'
+                            padding:'2dp'
+                            adaptive_height:True
+                            on_press: app.show_notifications()
+                            MDIconButton:
+                                pos_hint:{'center_x':.5}
+                                icon:'bell-outline'
+                                on_press: app.show_notifications()
+                            MDLabel:
+                                text:'Alerts'
+                                adaptive_height:True
+                                halign:'center'
+                        MDCard:
+                            id: send_feedback_button
+                            md_bg_color: .9,.9,.9,1
+                            ripple_behavior:True
+                            orientation:'vertical'
+                            padding:'2dp'
+                            adaptive_height:True
+                            on_release: root.show_alert_dialog()
+                            MDIconButton:
+                                id: send_feedback_button
+                                pos_hint:{'center_x':.5}
+                                icon:'email-send-outline'
+                                on_release: root.show_alert_dialog()
+                            MDLabel:
+                                text:'Feedback'
+                                adaptive_height:True
+                                halign:'center'
+                        MDCard:
+                            md_bg_color: .9,.9,.9,1
+                            ripple_behavior:True
+                            orientation:'vertical'
+                            padding:'2dp'
+                            adaptive_height:True
+                            on_press: app.go_to_settings()
+                            MDIconButton:
+                                pos_hint:{'center_x':.5}
+                                icon:'help'
+                                on_press: app.go_to_settings()
+                            MDLabel:
+                                text:'Help'
+                                adaptive_height:True
+                                halign:'center'
+                        MDCard:
+                            md_bg_color: .9,.9,.9,1
+                            ripple_behavior:True
+                            orientation:'vertical'
+                            padding:'2dp'
+                            adaptive_height:True
+                            on_press: app.go_to_settings()
+                            MDIconButton:
+                                pos_hint:{'center_x':.5}
+                                icon:'settings-outline'
+                                on_press: app.go_to_settings()
+                            MDLabel:
+                                text:'Settings'
+                                adaptive_height:True
+                                halign:'center'
+
+                    MDGridLayout:
+                        cols:2
+                        adaptive_height:True
+                        spacing:"2dp"
+                        GridCard:
+                            md_bg_color: .9,.9,.9,1
+                            background:"assets/img/Settings_48px.png"
+                            # text:"Settings"
+                            on_press: app.go_to_settings()
+                        GridCard:
+                            md_bg_color: .9,.9,.9,1
+                            background:"assets/img/Exit_48px.png"
+                            on_press: app.sign_out()
+                      
+    MDFloatingActionButton:
+        # id: send_feedback_button
+        icon: "qrcode-scan"
+        md_bg_color: app.theme_cls.primary_color
+        pos_hint: {"center_x": .85, "center_y": .1} 
+        on_release: app.scan_btn()
+
+<CustomImageTile@SmartTileWithLabel>:
+    size_hint_y:None
+    size_hint_x:None
+    height:'200dp'
+    width:'260dp'
+<GridCard@MDCard>:
+    ripple_behavior:True
+    orientation:'vertical'
+    image:''
+    folder_size:''
+    text:''
+    items_count:""
+    padding:'2dp'
+    spacing:'2dp'
+    size_hint_y:None
+    height:'100dp'
+    Image:
+        source:root.image
+    MDBoxLayout:
+        orientation:'vertical'
+        adaptive_height:True
+        MDLabel:
+            text:root.folder_size
+            adaptive_height:True
+            halign:'center'
+            font_style:'Caption'
+        MDLabel:
+            text:root.text
+            adaptive_height:True
+            halign:'center'
+        MDLabel:
+            halign:"center"
+            text:root.items_count
